@@ -22,7 +22,7 @@ public class BinaryTreeDemo {
         node3.setRight(node4);
         node3.setLeft(node5);
 
-        //测试
+        /*//测试
         System.out.println("前序遍历");
         binaryTree.preOrder();
 
@@ -30,7 +30,7 @@ public class BinaryTreeDemo {
         binaryTree.infixOrder();
 
         System.out.println("后序遍历");
-        binaryTree.postOrder();
+        binaryTree.postOrder();*/
 
 
         /*//前序查找
@@ -54,7 +54,7 @@ public class BinaryTreeDemo {
             System.out.println("没有找到");
         }*/
 
-        //后序查找
+        /*//后序查找
         //后序查找的次数 2次
         System.out.println("后序查找方式~~~~");
         HeroNode resNode = binaryTree.postOrderSearch(15);
@@ -62,7 +62,17 @@ public class BinaryTreeDemo {
             System.out.printf("找到了，信息为no=%d name=%s",resNode.getNo(),resNode.getName());
         }else {
             System.out.println("没有找到");
-        }
+        }*/
+
+        //测试删除节点的代码
+        System.out.println("删除前，前序遍历");
+        binaryTree.preOrder();
+        //测试删除叶子节点
+        binaryTree.delNode(5);
+        //测试删除子树
+        //binaryTree.delNode(3);
+        System.out.println("删除后，前序遍历");
+        binaryTree.preOrder();
     }
 }
 
@@ -74,6 +84,21 @@ class BinaryTree {
 
     public void setRoot(HeroNode root) {
         this.root = root;
+    }
+
+    //删除节点
+    public void delNode(int no){
+        if (root != null){
+            //如果只有一个root节点，这里立即判断root是不是就是要删除的节点
+            if (root.getNo() == no){
+                root = null;
+            }else {
+                //递归删除
+                root.delNode(no);
+            }
+        }else {
+            System.out.println("空树，不能删除");
+        }
     }
 
     //前序遍历
@@ -114,6 +139,11 @@ class BinaryTree {
         }
     }
 
+    /**
+     * 中序查找
+     * @param no
+     * @return
+     */
     public HeroNode infixOrderSearch(int no){
         if (root != null){
             return root.infixOrderSearch(no);
@@ -122,6 +152,11 @@ class BinaryTree {
         }
     }
 
+    /**
+     * 后序查找
+     * @param no
+     * @return
+     */
     public HeroNode postOrderSearch(int no){
         if (root != null){
             return root.postOrderSearch(no);
@@ -185,6 +220,34 @@ class HeroNode {
                 "no=" + no +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    /**
+     * 递归删除节点
+     * 1.如果删除的节点是叶子节点，则删除该节点
+     * 2.如果删除的节点是非叶子节点，则删除该子树
+     */
+    public void delNode(int no){
+        if (this.left != null && this.left.no == no){
+            this.left = null;
+            return;
+        }
+
+        if (this.right != null && this.right.no == no){
+            this.right = null;
+            return;
+        }
+
+        //向左子树进行递归
+        if (this.left != null){
+            this.left.delNode(no);
+        }
+
+        //向右子树进行递归
+        if (this.right != null){
+            this.right.delNode(no);
+        }
+
     }
 
     /**
